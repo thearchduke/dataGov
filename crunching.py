@@ -5,20 +5,27 @@ descrip = open('descriptions.txt', 'r')
 
 ####### Initialize the histogram arrays and the iterator
 keyw_dict = {}
-hist_dict = {}
+descrip_dict = {}
+boring = ['a', 'an', 'the', 'and', 'of', 'to', 'is', 'in']
 #i = 0
 
 
 ####### Histogram basics:
 for line in keyw:
 	for word in line.split():
-		realWord = word.strip(',')
+		realWord = word.strip(',').lower()
 		if realWord in keyw_dict:
 			keyw_dict[realWord] += 1
 		else:
 			keyw_dict[realWord] = 1
 
-size = len(keyw_dict)
+for line in descrip:
+	for word in line.split():
+		realWord = word.strip(',').lower()
+		if realWord in keyw_dict:
+			keyw_dict[realWord] += 1
+		else:
+			keyw_dict[realWord] = 1
 
 
 
