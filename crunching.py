@@ -25,10 +25,16 @@ size = len(keyw_dict)
 ####### iteritems() here is important.
 ####### Anyway, this selects the top 100.
 
-top100 = {}
-for key, value in keyw_dict.iteritems():
-	if value > 10000000.0 / size:
-		print key, value
+top100 = []
+for key, value in sorted(keyw_dict.iteritems(), key=lambda (k,v): (v,k)):
+	top100.append((value, key))
+
+top100 = sorted(top100, reverse = True)[0:99]
+
+print top100
+
+#	if value > 10000000.0 / size:
+#		print key, value
 
 
 
