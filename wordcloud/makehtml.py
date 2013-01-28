@@ -1,4 +1,4 @@
-import random
+import string, random
 
 def makehtml():
 	####### Open the keyword and description files
@@ -10,14 +10,15 @@ def makehtml():
 	keyw_dict = {}
 	descrip_dict = {}
 	boring = ['a', 'an', 'the', 'and', 'of', 'to', 'is', 'in', 'as', 'on', 'for',\
-		'with', 'are', 'this', 'on', 'by', 'data', 'tri', 'http://www.epa.gov/tri/', "tri's",\
-		'it', 'which', 'from', 'at', 'http://www.epa.gov/tri/.', 'r', '(tri)']
+		'with', 'are', 'this', 'on', 'by', 'data', 'tri', "tri's",\
+		'it', 'which', 'from', 'at', 'httpwwwepagovtri', 'r', '(tri)', 'or']
 
 
 	####### Histogram basics:
 	for line in keyw:
 		for word in line.split():
 			realWord = word.strip(',').lower()
+			realWord = realWord.translate(string.maketrans("",""), string.punctuation)
 			if realWord in keyw_dict and realWord not in boring:
 				keyw_dict[realWord] += 1
 			else:
@@ -26,6 +27,7 @@ def makehtml():
 	for line in descrip:
 		for word in line.split():
 			realWord = word.strip(',').lower()
+			realWord = realWord.translate(string.maketrans("",""), string.punctuation)
 			if realWord in keyw_dict and realWord not in boring:
 				keyw_dict[realWord] += 1
 			else:
@@ -40,7 +42,7 @@ def makehtml():
 	for key, value in sorted(keyw_dict.iteritems(), key=lambda (k,v): (v,k)):
 		top100.append((value, key))
 
-	top100 = sorted(top100, reverse = True)[0:100]
+	top100 = sorted(top100, reverse = True)[0:150]
 
 
 
@@ -49,14 +51,14 @@ def makehtml():
 	fout = open('output/cloud.html', 'w')
 	fout.write('<!DOCTYPE html><html><head><title>Word cloud for data.gov</title></head><body><div style="width: 800px;">')
 
-	divisor = float(top100[99][0])
+	divisor = float(top100[149][0])
 
 	#random.shuffle(top100)
 	top100.sort()
 
 	for pair in top100:
-		size = pair[0] / divisor * 5
-		fout.write("<span style='font-size: %spx;'>%s</span>  " % (size, pair[1]))
+		size = pair[0] / divisor * 4
+		fout.write("<span style='font-size: %spx;'>%s  </span>" % (size, pair[1]))
 
 	fout.write('</div></body></html>')
 
