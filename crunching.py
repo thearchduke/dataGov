@@ -46,19 +46,44 @@ top100 = sorted(top100, reverse = True)[0:100]
 ####### produce display html
 
 fout = open('cloud.html', 'w')
-fout.write('<!DOCTYPE html><html><head><title>Word cloud for data.gov</title></head><body><div style="width: 600px;">')
+fout.write('<!DOCTYPE html><html><head><title>Word cloud for data.gov</title></head><body><div style="width: 800px;">')
 
 divisor = float(top100[99][0])
 
-random.shuffle(top100)
+#random.shuffle(top100)
+top100.sort()
 
 for pair in top100:
 	size = pair[0] / divisor * 5
 	fout.write("<span style='font-size: %spx;'>%s</span>  " % (size, pair[1]))
 
 fout.write('</div></body></html>')
-fout.close()
 
+"""
+####### now we make it pretty
+def is_inside(test, boxes):
+	for box in boxes:
+		if test[0] > box[0] and test[2] < box[2]:
+			if test[1] > box[1] and test[3] < box[3]:
+				return True
+	return False
+
+boxes = []
+for pair in top100:
+	size = pair[0] / divisor * 5
+	init_x = random.randint(1, 600)
+	init_y = random.randint(1, 600)
+	test_box = (init_x, init_y, init_x + len(pair[1]) * size, init_y + size)
+	while is_inside(test_box, boxes):
+		new_x = random.randint(1, 600)
+		new_y = random.randint(1, 600)
+		test_box = (new_x, new_y, new_x + len(pair[1]) * size, new_y + size)
+	boxes.append(test_box)
+	fout.write("<div style='font-size: %spx; left: %spx; top: %spx; position: absolute;'>%s</div>  " % (size, test_box[0], test_box[1], pair[1]))
+"""
+
+fout.write('</div></body></html>')
+fout.close()
 
 keyw.close()
 descrip.close()
